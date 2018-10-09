@@ -1,0 +1,11 @@
+.center {
+    outline: 3px solid red;
+    outline-color: red;
+    outline-width: 3px;
+    text-align: center;
+    width: 300px;
+    margin: 2% auto;
+}
+.center h1 {
+    margin: 50px;
+}
