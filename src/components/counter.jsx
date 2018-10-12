@@ -4,10 +4,12 @@ import { makeRequest } from "../request";
 import Odometer from "react-odometerjs";
 import config from "./config";
 import Request from "request";
+import Input from "./input.jsx";
+
 import "./style/odometer-theme-default.css";
 export class Counter extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.id = "UC-lHJZR3Gqxm24_Vd_AJ5Yw";
     this.odometerValue = 0;
     this.amount = 230;
@@ -29,7 +31,9 @@ export class Counter extends Component {
   req() {
     setInterval(subs => {
       Request(
-        "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + this.id + "&key=" +
+        "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" +
+          this.id +
+          "&key=" +
           config.api_key,
         (err, res, body) => {
           if (err) throw err;
@@ -45,6 +49,7 @@ export class Counter extends Component {
   render() {
     return (
       <div className="center">
+      <p>{this.id}</p>
         <h1 className="big">
           {" "}
           <Odometer format="d" duration={500} value={this.amount} />
