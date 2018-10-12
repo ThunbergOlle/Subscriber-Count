@@ -8,15 +8,28 @@ import "./style/odometer-theme-default.css";
 export class Counter extends Component {
   constructor() {
     super();
+    this.id = "UC-lHJZR3Gqxm24_Vd_AJ5Yw";
     this.odometerValue = 0;
     this.amount = 230;
     this.req();
+    Request(
+      "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&key=" +
+        config.api_key,
+      (err, res, body) => {
+        if (err) throw err;
+        body = JSON.parse(body);
+        let subscriberCount = body.items[0].statistics.subscriberCount;
+        this.amount = subscriberCount;
+        this.setState({ amount: subscriberCount });
+        console.log(this.amount);
+      }
+    );
   }
 
   req() {
     setInterval(subs => {
       Request(
-        "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&key=" +
+        "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=" + this.id + "&key=" +
           config.api_key,
         (err, res, body) => {
           if (err) throw err;
