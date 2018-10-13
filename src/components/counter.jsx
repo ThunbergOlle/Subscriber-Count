@@ -14,6 +14,7 @@ export class Counter extends Component {
     this.odometerValue = 0;
     this.amount = 230;
     this.req();
+
     Request(
       "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&key=" +
         config.api_key,
@@ -28,6 +29,18 @@ export class Counter extends Component {
     );
   }
 
+  update(input) {
+    console.log(input);
+    this.id = input;
+    console.log(this.id);
+  }
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
   req() {
     setInterval(subs => {
       Request(
@@ -38,10 +51,20 @@ export class Counter extends Component {
         (err, res, body) => {
           if (err) throw err;
           body = JSON.parse(body);
-          let subscriberCount = body.items[0].statistics.subscriberCount;
-          this.amount = subscriberCount;
-          this.setState({ amount: subs });
-          console.log(this.amount);
+          if (body.items.length !== 0) {
+            let subscriberCount = body.items[0].statistics.subscriberCount;
+            this.amount = subscriberCount;
+            this.info = "";
+            this.setState({ info: "" });
+            this.setState({ amount: subs });
+            console.log(this.amount);
+            console.log(this.id);
+          } else {
+            this.info = "Could not find the user!";
+            this.amount = "0000";
+            this.setState({ info: "Could not find the user!" });
+            this.setState({ amount: "0000" });
+          }
         }
       );
     }, 2500);
@@ -49,7 +72,7 @@ export class Counter extends Component {
   render() {
     return (
       <div className="center">
-      <p>{this.id}</p>
+        <p>{this.info}</p>
         <h1 className="big">
           {" "}
           <Odometer format="d" duration={500} value={this.amount} />

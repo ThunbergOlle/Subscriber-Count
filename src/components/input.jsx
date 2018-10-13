@@ -1,26 +1,28 @@
 import React, { Component } from "react";
-import Counter from './counter.jsx';
+import Counter from "./counter.jsx";
 class Input extends Component {
   constructor() {
     super();
     this.input = "";
   }
   render() {
-    this.processInput = () => {
-      this.input = document.getElementById("input").value;
-      if (this.input !== undefined) {
-        console.log(this.input);
-      }
+
+    this.onClick = () => {
+      let newInput = document.getElementById("input").value;
+      this.input = newInput;
+      console.log(this.input);
+      this.child.update(this.input); // do stuff
     };
     return (
       <div class="wrapper">
+        <Counter onRef={ref => (this.child = ref)} />
+
         <div className="input">
           <input type="text" id="input" />
-          <button id="btnInput" onClick={this.processInput}>
-            Set counter
+          <button id="btnInput" onClick={this.onClick}>
+            Get data
           </button>
         </div>
-        <Counter />
       </div>
     );
   }
